@@ -10,7 +10,7 @@ export interface BlogPost {
     date: string;
     slug: string;
     tags: string[];
-    cover: string;
+    cover?: string;
     description: string;
 }
 

@@ -1,24 +1,39 @@
-import BlogPost from "@/@types/schema";
+import { BlogPost } from "@/@types/schema";
 import { Client } from "@notionhq/client";
 import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionToMarkdown } from "notion-to-md";
 
-export const notionToBlogPost = (notionPost: PageObjectResponse): BlogPost => {  
+export const notionToBlogPost = (notionPost: PageObjectResponse): BlogPost => {
+    let cover: string | undefined;
+    switch (notionPost.cover?.type) {
+        case 'file':
+            cover = (<any>notionPost.cover).file
+            break;
+        case 'external':
+            cover = (<any>notionPost.cover).external.url;
+            break;
+        default:
+            // Add default cover image if you want...
+            cover = undefined
+    }
+
     return {
         id: notionPost.id,
         title: (<any>notionPost.properties.Name).title[0].plain_text,
-        date: (<any>notionPost.properties.Date).date.last_edited_time,
+        date: (<any>notionPost.properties.Updated).last_edited_time,
         slug: (<any>notionPost.properties.Slug).formula.string,
         tags: (<any>notionPost.properties.Tags).multi_select,
-        cover: (<any>notionPost.properties.Cover).url,
+        cover,
         description: (<any>notionPost.properties.Description).rich_text[0].plain_text,
     }
 }
 
 export default class NotionService {
+
+
     client: Client = new Client({ auth: process.env.NOTION_TOKEN });
-    n2m: NotionToMarkdown = new NotionToMarkdown({notionClient: this.client});
-    
+    n2m: NotionToMarkdown = new NotionToMarkdown({ notionClient: this.client });
+
     async getBlogPostList() {
         const response = await this.client.databases.query({
             database_id: process.env.NOTION_DATABASE_ID!,
@@ -27,7 +42,7 @@ export default class NotionService {
                 checkbox: {
                     equals: true
                 }
-            }, 
+            },
             sorts: [{
                 property: "Updated",
                 direction: "descending"
@@ -50,7 +65,7 @@ export default class NotionService {
             }
         });
 
-        if(response.results.length === 0) {
+        if (response.results.length === 0) {
             return null;
         }
 
@@ -60,8 +75,8 @@ export default class NotionService {
 
         return {
             ...notionToBlogPost(notionPage),
-            markdown    
+            markdown
         };
-    }        
+    }
 }
 
