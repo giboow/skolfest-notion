@@ -1,0 +1,15 @@
+.body {
+    @apply h-screen;
+  
+    .content {
+      @apply h-full;
+      @apply p-5;
+    }
+  
+    .header {
+      @apply bg-gray-200;
+      @apply m-0;
+      @apply p-5;
+    }    
+  }
+  
