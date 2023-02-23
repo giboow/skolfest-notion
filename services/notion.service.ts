@@ -4,7 +4,7 @@ import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionToMarkdown } from "notion-to-md";
 
 export const notionToBlogPost = (notionPost: PageObjectResponse): BlogPost => {
-    let cover: string | undefined;
+    let cover: string | null = null;
     switch (notionPost.cover?.type) {
         case 'file':
             cover = (<any>notionPost.cover).file
@@ -14,7 +14,7 @@ export const notionToBlogPost = (notionPost: PageObjectResponse): BlogPost => {
             break;
         default:
             // Add default cover image if you want...
-            cover = undefined
+            cover = null
     }
 
     return {
@@ -23,8 +23,8 @@ export const notionToBlogPost = (notionPost: PageObjectResponse): BlogPost => {
         date: (<any>notionPost.properties.Updated).last_edited_time,
         slug: (<any>notionPost.properties.Slug).formula.string,
         tags: (<any>notionPost.properties.Tags).multi_select,
-        cover,
-        description: (<any>notionPost.properties.Description).rich_text[0].plain_text,
+        cover ,
+        description: (<any>notionPost.properties.Description).rich_text?.[0]?.plain_text || null,
     }
 }
 

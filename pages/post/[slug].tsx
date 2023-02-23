@@ -1,8 +1,11 @@
-import { BlogPost } from "@/@types/schema";
+import { SinglePost } from "@/@types/schema";
 import NotionService from "@/services/notion.service";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { DateTime } from "luxon";
+import { ClockIcon } from "@heroicons/react/24/solid";
 
 interface PostProps {
-    post: BlogPost;
+    post: SinglePost;
 }
 
 interface PostParams {
@@ -15,7 +18,7 @@ export async function getStaticPaths() {
     const notionService = new NotionService();
 
     const posts = await notionService.getBlogPostList();
-    const paths = posts.map((post) => ({params: {slug: post.slug}}));
+    const paths = posts.map((post) => ({ params: { slug: post.slug } }));
 
     return {
         paths,
@@ -23,27 +26,45 @@ export async function getStaticPaths() {
     };
 }
 
-export const getStaticProps = async ({params: {slug}}: PostParams) => {
+export const getStaticProps = async ({ params: { slug } }: PostParams) => {
     const notionService = new NotionService();
     console.log(slug);
 
     const post = await notionService.getBlogPost(slug);
-  
+
     return {
-      props: {
-        post,
-      },
+        props: {
+            post,
+        },
     }
-  }
+}
 
 
-const Post = ({post}: PostProps) => {
-
+const Post = ({ post }: PostProps) => {
+    const { cover } = post;
     return (
-        <div>
-            <h1>{post.title}</h1>
-            <div dangerouslySetInnerHTML={{ __html: post.description}} />
-        </div>
+        <div className="postPage">
+            {cover &&
+                <img className="postPage__cover" src={cover} alt="" />
+            }
+            <main className="postPage__main">
+
+                <div className="postPage__container">
+                    <article className="post">
+                        <h1 className="post__title">{post.title}</h1>
+                        <div className="meta">
+                            <div className="meta__datetime">
+                                <ClockIcon className="meta__datetime-icon"></ClockIcon>
+                                <time className="meta__datetime-time" dateTime={post.date}>
+                                    {DateTime.fromISO(post.date).setLocale('fr').toFormat('yyyy LLLL dd')}
+                                </time>
+                            </div>
+                        </div>
+                        <ReactMarkdown>{post.markdown}</ReactMarkdown>
+                    </article>
+                </div>
+            </main >
+        </div >
     )
 }
 

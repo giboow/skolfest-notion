@@ -17,11 +17,11 @@ export const getStaticProps = async () => {
 }
 
 
-const Home = ({posts}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-8">
-        {posts.map((post: BlogPost) => (<CardComponent className="m-1" title={post.title} content={post.description} link={`post/${post.slug}`} image={post.cover} />))}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {posts.map((post: BlogPost, index: number) => (<CardComponent title={post.title} key={index} content={post.description} link={`post/${post.slug}`} image={post.cover} />))}
       </div>
     </>
   )

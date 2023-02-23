@@ -1,0 +1,41 @@
+.postPage {
+    @apply min-h-screen bg-white dark:bg-gray-800;
+
+    .postPage__cover {
+        @apply h-96;
+        @apply w-full;
+        @apply object-cover;
+        @apply rounded-t-lg;
+    }
+
+    .postPage__main {
+        @apply max-w-5xl mx-auto relative py-8;
+
+        .postPage__container {
+            @apply flex items-center justify-center;
+
+            .post {
+                @apply prose lg:prose-xl dark:prose-invert;
+
+                .post__title {
+                    @apply mb-2;
+                }
+
+                .meta {
+                    @apply flex items-center justify-between;
+                    @apply text-sm text-gray-500 dark:text-gray-400;
+                    @apply mb-4;
+
+                    .meta__datetime {
+                        @apply flex items-center;
+                        .meta__datetime-icon {
+                            @apply w-4;
+                            @apply h-4;
+                            @apply mr-1;
+                            @apply ml-2;                        }
+                    }
+                }
+            }
+        }
+    }
+}

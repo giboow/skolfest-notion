@@ -2,10 +2,13 @@
 @import "~tailwindcss/components";
 @import "~tailwindcss/utilities";
 
+@font-face {
+    font-family: "Jokerman";
+    src: url("../public/fonts/Jokerman.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
 @import "structure";
 @import "components/components";
-
-
-
-
-
+@import "pages/post"
