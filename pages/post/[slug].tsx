@@ -1,8 +1,8 @@
 import { SinglePost } from "@/@types/schema";
 import NotionService from "@/services/notion.service";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { DateTime } from "luxon";
 import { ClockIcon } from "@heroicons/react/24/solid";
+import { DateTime } from "luxon"
 
 interface PostProps {
     post: SinglePost;
@@ -44,9 +44,7 @@ const Post = ({ post }: PostProps) => {
     const { cover } = post;
     return (
         <div className="postPage">
-            {cover &&
-                <img className="postPage__cover" src={cover} alt="" />
-            }
+            <img className="postPage__cover" src={cover || "/images/default.jpg"} alt="" />
             <main className="postPage__main">
 
                 <div className="postPage__container">

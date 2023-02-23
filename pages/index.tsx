@@ -21,7 +21,7 @@ const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {posts.map((post: BlogPost, index: number) => (<CardComponent title={post.title} key={index} content={post.description} link={`post/${post.slug}`} image={post.cover} />))}
+        {posts.map((post: BlogPost, index: number) => (<CardComponent date={post.date} title={post.title} key={index} content={post.description} link={`post/${post.slug}`} image={post.cover} />))}
       </div>
     </>
   )
