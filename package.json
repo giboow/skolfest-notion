@@ -19,11 +19,13 @@
     "classnames": "^2.3.2",
     "luxon": "^3.2.1",
     "next": "13.1.5",
-    "notion-to-md": "https://github.com/giboow/notion-to-md/#61-improve-the-display-of-attached-files",
+    "notion-to-md": "2.5.5",
     "postcss-import": "^15.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-markdown": "^8.0.5",
+    "rehype-shift-heading": "^1.0.2",
+    "rehype-urls": "^1.1.1",
     "typescript": "4.9.4"
   },
   "devDependencies": {

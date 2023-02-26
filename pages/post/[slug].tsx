@@ -1,8 +1,11 @@
 import { SinglePost } from "@/@types/schema";
 import NotionService from "@/services/notion.service";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { ClockIcon } from "@heroicons/react/24/solid";
+import { ArrowDownTrayIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { DateTime } from "luxon"
+import urls from "rehype-urls";
+import rehypeShiftHeading from 'rehype-shift-heading'
+
 
 interface PostProps {
     post: SinglePost;
@@ -39,9 +42,28 @@ export const getStaticProps = async ({ params: { slug } }: PostParams) => {
     }
 }
 
-
 const Post = ({ post }: PostProps) => {
+
+    // Rehypes plugin
+    const urlPlugin: any = [urls, (url: any, node: any) => {
+        const { href } = url;
+        if (node.tagName === 'a' && href) {
+            const matches = href.match(/[^\/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/);
+            let fileName = matches ? matches[0] : "Image";
+            node.children = [
+                { type: 'text', value: <ArrowDownTrayIcon className="link__icon"></ArrowDownTrayIcon> },
+                { type: 'text', value: fileName }
+            ]
+            node.properties.title = `Téléchargez le fichier : ${fileName}`;
+            node.properties.target = '_blank';
+        }
+        return url
+    }];
+
+    const shiftHeading: any = [rehypeShiftHeading, { shift: 1 }];
+
     const { cover } = post;
+
     return (
         <div className="postPage">
             <img className="postPage__cover" src={cover || "/images/default.jpg"} alt="" />
@@ -58,7 +80,7 @@ const Post = ({ post }: PostProps) => {
                                 </time>
                             </div>
                         </div>
-                        <ReactMarkdown>{post.markdown}</ReactMarkdown>
+                        <ReactMarkdown rehypePlugins={[urlPlugin, shiftHeading]}>{post.markdown}</ReactMarkdown>
                     </article>
                 </div>
             </main >

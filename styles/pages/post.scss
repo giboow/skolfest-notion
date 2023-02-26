@@ -21,6 +21,12 @@
                     @apply mb-2;
                 }
 
+                .link__icon {
+                    @apply w-4;
+                    @apply h-4;
+                    @apply mr-2;
+                    display: inline-block
+                }
                 .meta {
                     @apply flex items-center justify-between;
                     @apply text-sm text-gray-500 dark:text-gray-400;
