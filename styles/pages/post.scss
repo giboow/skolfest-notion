@@ -16,7 +16,7 @@
 
             .post {
                 @apply prose lg:prose-xl dark:prose-invert;
-
+                @apply px-4;
                 .post__title {
                     @apply mb-2;
                 }
