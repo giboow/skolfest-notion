@@ -24,6 +24,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-markdown": "^8.0.5",
+    "rehype-raw": "^6.1.1",
+    "rehype-rewrite": "^3.0.6",
     "rehype-shift-heading": "^1.0.2",
     "rehype-urls": "^1.1.1",
     "typescript": "4.9.4"

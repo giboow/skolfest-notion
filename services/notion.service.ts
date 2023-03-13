@@ -5,9 +5,10 @@ import { NotionToMarkdown } from "notion-to-md";
 
 export const notionToBlogPost = (notionPost: PageObjectResponse): BlogPost => {
     let cover: string | null = null;
+    
     switch (notionPost.cover?.type) {
         case 'file':
-            cover = (<any>notionPost.cover).file
+            cover = (<any>notionPost.cover).file.url;
             break;
         case 'external':
             cover = (<any>notionPost.cover).external.url;
@@ -20,7 +21,7 @@ export const notionToBlogPost = (notionPost: PageObjectResponse): BlogPost => {
     return {
         id: notionPost.id,
         title: (<any>notionPost.properties.Name).title[0].plain_text,
-        date: (<any>notionPost.properties.Updated).last_edited_time,
+        date: (<any>notionPost.properties.Created).date.start,
         slug: (<any>notionPost.properties.Slug).formula.string,
         tags: (<any>notionPost.properties.Tags).multi_select,
         cover ,
@@ -44,7 +45,7 @@ export default class NotionService {
                 }
             },
             sorts: [{
-                property: "Updated",
+                property: "Created",
                 direction: "descending"
             }]
         });

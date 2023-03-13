@@ -6,6 +6,8 @@ import { DateTime } from "luxon"
 import urls from "rehype-urls";
 import rehypeShiftHeading from 'rehype-shift-heading'
 
+import rehypeRaw from "rehype-raw";
+
 
 interface PostProps {
     post: SinglePost;
@@ -80,7 +82,7 @@ const Post = ({ post }: PostProps) => {
                                 </time>
                             </div>
                         </div>
-                        <ReactMarkdown rehypePlugins={[urlPlugin, shiftHeading]}>{post.markdown}</ReactMarkdown>
+                        <ReactMarkdown rehypePlugins={[rehypeRaw, urlPlugin, shiftHeading]}>{post.markdown}</ReactMarkdown>
                     </article>
                 </div>
             </main >

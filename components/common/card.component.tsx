@@ -9,7 +9,6 @@ interface CardComponentProps { title: string, date: string, content: string, lin
 const CardComponent = ({ title, date, content, link, image, linkText, className }: CardComponentProps) => {
 
     if (!linkText) linkText = "Lire la suite";
-
     return (
         <div className={classNames("card", className)}>
 
@@ -28,9 +27,7 @@ const CardComponent = ({ title, date, content, link, image, linkText, className 
                 </div>
             </div>
             <div className="card__content">
-
                 <p className="card__description">{content}</p>
-
             </div>
             <a href={link} className="card__link">
                 {linkText}
