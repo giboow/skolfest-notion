@@ -1,0 +1,33 @@
+name: Publish to https://skolfest-guerin.zd.fr
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: install
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: deploy
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_passwd }}
+          local-dir: ./out/
+          server-dir: ./ public_html/
+          state-name: ../.ftp-deploy-sync-state.json
+          dangerous-clean-slate: true
+      - name: Ping Sitemap
+        uses: atymic/sitemap-ping-action@master
+        with:
+          sitemap-url: https://skolfest-guerin.zd.fr/sitemap.xml
