@@ -3,14 +3,15 @@ on:
   push:
     branches:
       - main
-env:
-  NOTION_TOKEN: ${{ secrets.notion_token }}
-  NOTION_DATABASE_ID: ${{ secrets.notion_database }}
+
 
 jobs:
   deploy:
     name: publish
     runs-on: ubuntu-latest
+    env:
+      NOTION_TOKEN: ${{ secrets.notion_token }}
+      NOTION_DATABASE_ID: ${{ secrets.notion_database }}
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
