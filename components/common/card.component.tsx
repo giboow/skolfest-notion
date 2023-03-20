@@ -1,16 +1,16 @@
 import { ArrowSmallRightIcon, ClockIcon } from '@heroicons/react/24/solid'
-import classNames from "classnames";
+import classnames from "classnames";
 import { DateTime } from "luxon"
 
 
-interface CardComponentProps { title: string, date: string, content: string, link: string, image?: string, linkText?: string, className?: string }
+interface CardComponentProps { title: string, date: string, content: any, link: string, image?: any, linkText?: string, className?: string }
 
 
 const CardComponent = ({ title, date, content, link, image, linkText, className }: CardComponentProps) => {
 
     if (!linkText) linkText = "Lire la suite";
     return (
-        <div className={classNames("card", className)}>
+        <div className={classnames("card", className)}>
 
             <a href={link}>
                 <img className="card__image" src={image || "/images/default.jpg"} alt="" />
