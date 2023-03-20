@@ -10,8 +10,8 @@ jobs:
     name: publish
     runs-on: ubuntu-latest
     env:
-      NOTION_TOKEN: ${{ secrets.notion_token }}
-      NOTION_DATABASE_ID: ${{ secrets.notion_database }}
+      NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
@@ -27,9 +27,9 @@ jobs:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          server: ${{ secrets.ftp_server }}
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_passwd }}
+          server: ${{ secrets.FTP_SERVR }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FPT_PASSWD }}
           local-dir: ./out/
           server-dir: ./ public_html/
           state-name: ../.ftp-deploy-sync-state.json
