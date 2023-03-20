@@ -4,8 +4,8 @@ on:
     branches:
       - main
 env:
-  NOTION_TOKEN=${{ secrets.notion_token }}
-  NOTION_DATABASE_ID=${{ secrets.notion_database }}
+  NOTION_TOKEN: ${{ secrets.notion_token }}
+  NOTION_DATABASE_ID: ${{ secrets.notion_database }}
 
 jobs:
   deploy:
