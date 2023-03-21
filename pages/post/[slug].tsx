@@ -7,6 +7,7 @@ import urls from "rehype-urls";
 import rehypeShiftHeading from 'rehype-shift-heading'
 
 import rehypeRaw from "rehype-raw";
+import Head from "next/head";
 
 
 interface PostProps {
@@ -51,19 +52,19 @@ const Post = ({ post }: PostProps) => {
         const { href } = url;
         if (node.tagName === 'a' && href) {
             const matches = href.match(/[^\/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/);
-            if(matches) {
+            if (matches) {
                 let fileName = matches[0];
-                if(href.startsWith("https://s3")) {
-                    node.properties.class= 'link';
+                if (href.startsWith("https://s3")) {
+                    node.properties.class = 'link';
                     node.children = [
                         { type: 'text', value: <ArrowDownTrayIcon className="link__icon"></ArrowDownTrayIcon> },
                         { type: 'text', value: fileName }
                     ]
                     node.properties.title = `Téléchargez le fichier : ${fileName}`;
                     node.properties.target = '_blank';
-                }                 
+                }
             }
-            
+
         }
         return url
     }];
@@ -73,26 +74,34 @@ const Post = ({ post }: PostProps) => {
     const { cover } = post;
 
     return (
-        <div className="postPage">
-            <img className="postPage__cover" src={cover || "/images/default.jpg"} alt="" />
-            <main className="postPage__main">
+        <>
+            <Head>
+                <meta property="og:title" content={post.title}/>
+                <meta property="og:type" content="website"/>
+                <meta property="og:image" content={post.cover!}/>
+                <meta property="og:description" content={post.description!}/>
+            </Head>
+            <div className="postPage">
+                <img className="postPage__cover" src={cover || "/images/default.jpg"} alt="" />
+                <main className="postPage__main">
 
-                <div className="postPage__container">
-                    <article className="post">
-                        <h1 className="post__title">{post.title}</h1>
-                        <div className="meta">
-                            <div className="meta__datetime">
-                                <ClockIcon className="meta__datetime-icon"></ClockIcon>
-                                <time className="meta__datetime-time" dateTime={post.date}>
-                                    {DateTime.fromISO(post.date).setLocale('fr').toFormat('yyyy LLLL dd')}
-                                </time>
+                    <div className="postPage__container">
+                        <article className="post">
+                            <h1 className="post__title">{post.title}</h1>
+                            <div className="meta">
+                                <div className="meta__datetime">
+                                    <ClockIcon className="meta__datetime-icon"></ClockIcon>
+                                    <time className="meta__datetime-time" dateTime={post.date}>
+                                        {DateTime.fromISO(post.date).setLocale('fr').toFormat('yyyy LLLL dd')}
+                                    </time>
+                                </div>
                             </div>
-                        </div>
-                        <ReactMarkdown rehypePlugins={[rehypeRaw, urlPlugin, shiftHeading]}>{post.markdown}</ReactMarkdown>
-                    </article>
-                </div>
-            </main >
-        </div >
+                            <ReactMarkdown rehypePlugins={[rehypeRaw, urlPlugin, shiftHeading]}>{post.markdown}</ReactMarkdown>
+                        </article>
+                    </div>
+                </main >
+            </div >
+        </>
     )
 }
 
