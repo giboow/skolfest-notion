@@ -51,13 +51,19 @@ const Post = ({ post }: PostProps) => {
         const { href } = url;
         if (node.tagName === 'a' && href) {
             const matches = href.match(/[^\/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/);
-            let fileName = matches ? matches[0] : "Image";
-            node.children = [
-                { type: 'text', value: <ArrowDownTrayIcon className="link__icon"></ArrowDownTrayIcon> },
-                { type: 'text', value: fileName }
-            ]
-            node.properties.title = `Téléchargez le fichier : ${fileName}`;
-            node.properties.target = '_blank';
+            if(matches) {
+                let fileName = matches[0];
+                if(href.startsWith("https://s3")) {
+                    node.properties.class= 'link';
+                    node.children = [
+                        { type: 'text', value: <ArrowDownTrayIcon className="link__icon"></ArrowDownTrayIcon> },
+                        { type: 'text', value: fileName }
+                    ]
+                    node.properties.title = `Téléchargez le fichier : ${fileName}`;
+                    node.properties.target = '_blank';
+                }                 
+            }
+            
         }
         return url
     }];

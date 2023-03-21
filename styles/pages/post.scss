@@ -15,17 +15,22 @@
             @apply flex items-center justify-center;
 
             .post {
-                @apply prose lg:prose-xl dark:prose-invert;
-                @apply px-4;
+                @apply flex-col md:flex-row w-screen m-3;
+                @apply prose lg:prose-xl;
+                @apply dark:prose-invert;
+                @apply px-8;
                 .post__title {
                     @apply mb-2;
                 }
 
-                .link__icon {
-                    @apply w-4;
-                    @apply h-4;
-                    @apply mr-2;
-                    display: inline-block
+                .link {
+                    @apply truncate block;
+                    .link__icon {
+                        @apply w-4;
+                        @apply h-4;
+                        @apply mr-2;
+                        display: inline-block;
+                    }
                 }
                 .meta {
                     @apply flex items-center justify-between;
