@@ -2,13 +2,17 @@ import { BlogPost } from "@/@types/schema";
 import { Client } from "@notionhq/client";
 import { PageObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionToMarkdown } from "notion-to-md";
+import https from 'https';
+import path from 'path';
+import fs from 'fs';
 
-export const notionToBlogPost = (notionPost: PageObjectResponse): BlogPost => {
+export const notionToBlogPost = async (notionPost: PageObjectResponse): Promise<BlogPost> => {
+    const postId = notionPost.id
+
     let cover: string | null = null;
-    
     switch (notionPost.cover?.type) {
         case 'file':
-            cover = (<any>notionPost.cover).file.url;
+            cover = await extractExternalImage(postId, (<any>notionPost.cover).file.url);
             break;
         case 'external':
             cover = (<any>notionPost.cover).external.url;
@@ -24,10 +28,36 @@ export const notionToBlogPost = (notionPost: PageObjectResponse): BlogPost => {
         date: (<any>notionPost.properties.Created).date.start,
         slug: (<any>notionPost.properties.Slug).formula.string,
         tags: (<any>notionPost.properties.Tags).multi_select,
-        cover ,
+        cover,
         description: (<any>notionPost.properties.Description).rich_text?.[0]?.plain_text || null,
     }
 }
+
+export const extractExternalImage = async (postId: string, imageUrl: string): Promise<string> => new Promise(resolve => {
+    const matches = imageUrl.match(/[^\/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/);
+
+    if (matches) {
+        const filename = matches[0];
+        const dir = path.join(process.cwd(), 'public', 'posts', postId);
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        const filePath = path.join(dir, filename);
+        if (!fs.existsSync(filePath)) {
+            const fsImage = fs.createWriteStream(filePath);
+            https.get(imageUrl, (response) => {
+                response.pipe(fsImage);
+                fsImage.on("finish", () => {
+                    fsImage.close();
+                    resolve(`/posts/${postId}/${filename}`);
+                });
+            });
+        } else {
+            resolve(`/posts/${postId}/${filename}`);
+        }
+    } else {
+        resolve(imageUrl);
+    }
+
+});
 
 export default class NotionService {
 
@@ -50,7 +80,7 @@ export default class NotionService {
             }]
         });
 
-        return (<PageObjectResponse[]>response.results).map(notionToBlogPost);
+        return await Promise.all((<PageObjectResponse[]>response.results).map(notionToBlogPost));
     }
 
     async getBlogPost(slug: string) {
@@ -72,10 +102,22 @@ export default class NotionService {
 
         const notionPage = <PageObjectResponse>response.results[0];
         const mdBlock = await this.n2m.pageToMarkdown(notionPage.id);
-        const markdown = this.n2m.toMarkdownString(mdBlock);
+        let markdown = this.n2m.toMarkdownString(mdBlock);
+
+        const regex = /^!?\[\w*]\((https?:\/\/[^()]+)\)$/gm;
+        const matches = markdown.match(regex);
+        if (matches) {
+            for (const match of matches) {
+                const imageUrl = match.match(/https?:\/\/[^()]+/gm)?.[0];
+                if (imageUrl) {
+                    const image = await extractExternalImage(notionPage.id, imageUrl);
+                    markdown = markdown.replace(imageUrl, image);
+                }
+            }
+        }
 
         return {
-            ...notionToBlogPost(notionPage),
+            ...(await notionToBlogPost(notionPage)),
             markdown
         };
     }

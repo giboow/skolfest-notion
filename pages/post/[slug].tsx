@@ -34,7 +34,6 @@ export async function getStaticPaths() {
 
 export const getStaticProps = async ({ params: { slug } }: PostParams) => {
     const notionService = new NotionService();
-    console.log(slug);
 
     const post = await notionService.getBlogPost(slug);
 
@@ -54,10 +53,10 @@ const Post = ({ post }: PostProps) => {
             const matches = href.match(/[^\/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/);
             if (matches) {
                 let fileName = matches[0];
-                if (href.startsWith("https://s3")) {
+                if (href.startsWith(`/posts/${post.id}`)) {
                     node.properties.class = 'link';
                     node.children = [
-                        { type: 'text', value: <ArrowDownTrayIcon className="link__icon"></ArrowDownTrayIcon> },
+                        { type: 'text', value: <ArrowDownTrayIcon key={url} className="link__icon"></ArrowDownTrayIcon> },
                         { type: 'text', value: fileName }
                     ]
                     node.properties.title = `Téléchargez le fichier : ${fileName}`;
