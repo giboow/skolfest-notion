@@ -8,6 +8,7 @@ import rehypeShiftHeading from 'rehype-shift-heading'
 
 import rehypeRaw from "rehype-raw";
 import Head from "next/head";
+import Title from "@/components/common/title.component";
 
 
 interface PostProps {
@@ -74,11 +75,12 @@ const Post = ({ post }: PostProps) => {
 
     return (
         <>
+            <Title title={post.title} />
             <Head>
-                <meta property="og:title" content={post.title}/>
-                <meta property="og:type" content="website"/>
-                <meta property="og:image" content={post.cover!}/>
-                <meta property="og:description" content={post.description!}/>
+                <meta property="og:title" content={post.title} />
+                <meta property="og:type" content="website" />
+                <meta property="og:image" content={post.cover!} />
+                <meta property="og:description" content={post.description!} />
             </Head>
             <div className="postPage">
                 <img className="postPage__cover" src={cover || "/images/default.jpg"} alt="" />
