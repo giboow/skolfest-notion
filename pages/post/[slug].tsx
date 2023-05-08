@@ -63,6 +63,10 @@ const Post = ({ post }: PostProps) => {
                     node.properties.title = `Téléchargez le fichier : ${fileName}`;
                     node.properties.target = '_blank';
                 }
+            } else {
+                node.properties.title = `Visitez l'URL : ${href}`;
+                node.children = [{ type: 'text', value: href }];
+                node.properties.target = '_blank';
             }
 
         }
