@@ -67,7 +67,7 @@ export default class NotionService {
 
     async getBlogPostList() {
         const response = await this.client.databases.query({
-            database_id: process.env.NOTION_DATABASE_ID!,
+            database_id: process.env.POSTS_DATABASE_ID!,
             filter: {
                 property: "Published",
                 checkbox: {
@@ -85,7 +85,7 @@ export default class NotionService {
 
     async getBlogPost(slug: string) {
         const response = await this.client.databases.query({
-            database_id: process.env.NOTION_DATABASE_ID!,
+            database_id: process.env.POSTS_DATABASE_ID!,
             filter: {
                 property: "Slug",
                 formula: {
