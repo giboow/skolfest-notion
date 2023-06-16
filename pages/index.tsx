@@ -1,5 +1,5 @@
 import { BlogPost } from "@/@types/schema";
-import CardComponent from "@/components/common/card.component";
+import PostCardComponent from "@/components/common/post-card.component";
 import Title from "@/components/common/title.component";
 import NotionService from "@/services/notion.service";
 import classnames from "classnames";
@@ -25,7 +25,7 @@ const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
       <Title title="Accueil" />
       <div className="grid grid-cols-1 lg:grid-cols-4  md:grid-cols-2 gap-4">
         {posts.map((post: BlogPost, index: number) => (
-          <CardComponent
+          <PostCardComponent
             date={post.date}
             title={post.title}
             key={index}

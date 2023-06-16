@@ -6,7 +6,7 @@ import { DateTime } from "luxon"
 interface CardComponentProps { title: string, date: string, content: any, link: string, image?: any, linkText?: string, className?: string }
 
 
-const CardComponent = ({ title, date, content, link, image, linkText, className }: CardComponentProps) => {
+const PostCardComponent = ({ title, date, content, link, image, linkText, className }: CardComponentProps) => {
 
     if (!linkText) linkText = "Lire la suite";
     return (
@@ -38,4 +38,4 @@ const CardComponent = ({ title, date, content, link, image, linkText, className 
 }
 
 
-export default CardComponent;
+export default PostCardComponent;
