@@ -13,6 +13,7 @@ jobs:
     env:
       NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       POSTS_DATABASE_ID: ${{ secrets.POSTS_DATABASE_ID }}
+      PARTENAIRE_DATABASE_ID: ${{ secrets.PARTENAIRE_DATABASE_ID }}
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
