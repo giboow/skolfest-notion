@@ -30,7 +30,7 @@ export default function Document() {
                      className="text-xl block mt-4 inline-block lg:mt-0 text-gray-700 dark:text-gray-100 hover:text-white mr-4">
                     Accueil
                   </a>
-                  <a href="/partenariat"
+                  <a href="/partenaires"
                      className="text-xl block mt-4 ml-4 inline-block lg:mt-0 text-gray-700 dark:text-gray-100 hover:text-white mr-4">
                     Partenaires
                   </a>

@@ -22,7 +22,7 @@ interface PartenairesProps {
 const Partnariat = ({partenaires}: PartenairesProps) => {
 
     return (<>
-        <Title title="Partenariat" />
+        <Title title="Nos partenaires" />
         <div className="grid grid-cols-1 lg:grid-cols-4  md:grid-cols-2 gap-4">
             {partenaires.map((p, i) =>
                 <PartenaireComponent key={i} partenaire={p} />
