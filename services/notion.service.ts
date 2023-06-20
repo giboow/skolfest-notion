@@ -12,7 +12,7 @@ export const notionToBlogPost = async (notionPost: PageObjectResponse): Promise<
     let cover: string | null = null;
     switch (notionPost.cover?.type) {
         case 'file':
-            cover = await extractExternalImage(postId, (<any>notionPost.cover).file.url);
+            cover = await extractExternalImage(postId, (<any>notionPost.cover).file.url, 'posts');
             break;
         case 'external':
             cover = (<any>notionPost.cover).external.url;
@@ -33,12 +33,12 @@ export const notionToBlogPost = async (notionPost: PageObjectResponse): Promise<
     }
 }
 
-export const extractExternalImage = async (postId: string, imageUrl: string): Promise<string> => new Promise(resolve => {
+export const extractExternalImage = async (id: string, imageUrl: string, dirname: string): Promise<string> => new Promise(resolve => {
     const matches = imageUrl.match(/[^\/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/);
 
     if (matches) {
         const filename = matches[0];
-        const dir = path.join(process.cwd(), 'public', 'posts', postId);
+        const dir = path.join(process.cwd(), 'public', dirname, id);
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
         const filePath = path.join(dir, filename);
         if (!fs.existsSync(filePath)) {
@@ -47,11 +47,11 @@ export const extractExternalImage = async (postId: string, imageUrl: string): Pr
                 response.pipe(fsImage);
                 fsImage.on("finish", () => {
                     fsImage.close();
-                    resolve(`/posts/${postId}/${filename}`);
+                    resolve(`/${dirname}/${id}/${filename}`);
                 });
             });
         } else {
-            resolve(`/posts/${postId}/${filename}`);
+            resolve(`/${dirname}/${id}/${filename}`);
         }
     } else {
         resolve(imageUrl);
@@ -110,7 +110,7 @@ export default class NotionService {
             for (const match of matches) {
                 const imageUrl = match.match(/https?:\/\/[^()]+/gm)?.[0];
                 if (imageUrl) {
-                    const image = await extractExternalImage(notionPage.id, imageUrl);
+                    const image = await extractExternalImage(notionPage.id, imageUrl, 'posts');
                     markdown = markdown.replace(imageUrl, image);
                 }
             }
