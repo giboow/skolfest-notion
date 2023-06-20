@@ -8,11 +8,8 @@
       @apply dark:bg-sky-700;
       
       .header__content {
-        @apply m-0;
         @apply p-5;
-        @apply container;
-        @apply mx-auto;
-        
+
         .header__brand {
           @apply text-5xl;
           @apply text-gray-900;
@@ -35,4 +32,3 @@
       @apply mx-auto;
     }
   }
-  
