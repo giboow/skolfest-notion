@@ -21,8 +21,8 @@ export interface SinglePost extends BlogPost {
 export interface Partenaire {
     id: string;
     name: string;
-    // address: string;
-    // image: string;
-    // link: string;
+    address?: string;
+    image?: string;
+    link?: string;
 }
 
