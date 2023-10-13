@@ -54,7 +54,7 @@ const Post = ({ post }: PostProps) => {
             const matches = href.match(/[^\/\\&\?]+\.\w{3,4}(?=([\?&].*$|$))/);
             if (matches) {
                 let fileName = matches[0];
-                if (href.startsWith(`/posts/${post.id}`)) {
+                if (fileName.match(/\.(pdf|png|jpg|jpeg)/)) {
                     node.properties.class = 'link';
                     node.children = [
                         { type: 'text', value: <ArrowDownTrayIcon key={url} className="link__icon"></ArrowDownTrayIcon> },
@@ -62,6 +62,7 @@ const Post = ({ post }: PostProps) => {
                     ]
                     node.properties.title = `Téléchargez le fichier : ${fileName}`;
                     node.properties.target = '_blank';
+
                 }
             } else {
                 node.properties.title = `Visitez l'URL : ${href}`;

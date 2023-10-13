@@ -34,10 +34,9 @@ export const notionToBlogPost = async (notionPost: PageObjectResponse): Promise<
 }
 
 export const extractExternalImage = async (id: string, imageUrl: string, dirname: string): Promise<string> => new Promise(resolve => {
-    const matches = imageUrl.match(/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}).*(\.\w{3,4})/);
-    console.log(matches)
+    const matches = imageUrl.match(/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}).?\/(\w)(\.\w{3,4})/);
     if (matches) {
-        const filename = matches[1]+matches[2];
+        const filename = matches[1]+matches[2]+matches[3];
         const dir = path.join(process.cwd(), 'public', dirname, id);
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
         const filePath = path.join(dir, filename);
@@ -106,7 +105,6 @@ export default class NotionService {
 
         const regex = /^!?\[\w*]\((https?:\/\/[^()]+)\)$/gm;
         const matches = markdown.match(regex);
-        console.log(matches);
         if (matches) {
             for (const match of matches) {
                 const imageUrl = match.match(/https?:\/\/[^()]+/gm)?.[0];
