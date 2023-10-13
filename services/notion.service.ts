@@ -34,9 +34,9 @@ export const notionToBlogPost = async (notionPost: PageObjectResponse): Promise<
 }
 
 export const extractExternalImage = async (id: string, imageUrl: string, dirname: string): Promise<string> => new Promise(resolve => {
-    const matches = imageUrl.match(/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}).?\/(\w)(\.\w{3,4})/);
+    const matches = imageUrl.match(/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}).?\/(.*)(\.\w{3,4})/);
     if (matches) {
-        const filename = matches[1]+matches[2]+matches[3];
+        const filename = (matches[1]+matches[2]+matches[3]).replace('/', '');
         const dir = path.join(process.cwd(), 'public', dirname, id);
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
         const filePath = path.join(dir, filename);

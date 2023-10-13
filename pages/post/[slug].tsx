@@ -69,7 +69,6 @@ const Post = ({ post }: PostProps) => {
                 node.children = [{ type: 'text', value: href }];
                 node.properties.target = '_blank';
             }
-
         }
         return url
     }];
