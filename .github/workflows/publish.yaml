@@ -35,7 +35,7 @@ jobs:
           server-dir: ./public_html/
           state-name: ../.ftp-deploy-sync-state.json
           dangerous-clean-slate: true
-      - name: Ping Sitemap
-        uses: atymic/sitemap-ping-action@master
-        with:
-          sitemap-url: https://skolfest-guerin.zd.fr/sitemap.xml
+      # - name: Ping Sitemap
+      #   uses: atymic/sitemap-ping-action@master
+      #   with:
+      #     sitemap-url: https://skolfest-guerin.zd.fr/sitemap.xml
